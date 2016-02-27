@@ -53,6 +53,10 @@ Returns all main keywords in the database.
 
 Returns all modifier keywords in the database.
 
-### PUT /new_order/
+### GET /get_orders/<id>
 
-Adds new order. Payload must have user #, latitude, longitude, and keywords.
+Gets all orders for resteraunts with <id>
+
+### PUT /new_order/<id>
+
+Adds new order for user with <id>. Payload must have latitude, longitude, and keywords.
