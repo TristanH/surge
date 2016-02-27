@@ -5,7 +5,7 @@ from rest_framework import serializers
 class KeywordSerializer(serializers.HyperlinkedModelSerializer):                   
     class Meta:                                                                    
         model = Keyword                                                            
-        fields = ('string')
+        fields = ('string', 'is_main',)
 
 class OrderSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
