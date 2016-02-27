@@ -42,3 +42,13 @@ or
 For more information about using Python on Heroku, see these Dev Center articles:
 
 - [Python on Heroku](https://devcenter.heroku.com/categories/python)
+
+# API END-POINTS
+
+### GET /keywords/
+
+Returns all keywords in the database.
+
+### GET /new_order/
+
+Currently returns a list of all orders - will soon be a PUT to add a new order.
