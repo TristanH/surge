@@ -3,15 +3,18 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 
+from django.contrib.auth.models import User   
+
 from main.models import Order
 from serializers import OrderSerializer
 
 @api_view(['PUT'])
 @permission_classes((AllowAny,))
 def new_order(request, pk):
+    # TODO test
     try:
-        # TODO get user by pk, test
-        order = Order.objects.create(hungry_user=pk,
+        user = User.objects.get(pk=pk)
+        order = Order.objects.create(hungry_user=user,
                                  status=Order.IN_BIDDING,
                                  keywords=request.PUT['keywords'],
                                  latitude=request.PUT['latitude'],
