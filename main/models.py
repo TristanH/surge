@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class Keyword(models.Model):
@@ -43,6 +44,15 @@ class Restuarant(models.Model):
     name = models.CharField(max_length=255)
     latitude = models.DecimalField(max_digits=10, decimal_places=7)
     longitude = models.DecimalField(max_digits=10, decimal_places=7)
+
+
+def get_restaurant(self):
+    try:
+        return Restuarant.objects.get(user=self.id)
+    except ObjectDoesNotExist:
+        return None
+
+User.add_to_class('get_restaurant', get_restaurant)
 
 
 class Item(models.Model):
