@@ -37,7 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'hello'
+    'site'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -51,7 +51,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.security.SecurityMiddleware',
 )
 
-ROOT_URLCONF = 'gettingstarted.urls'
+ROOT_URLCONF = 'surge_app.urls'
 
 TEMPLATES = [
     {
@@ -70,7 +70,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'gettingstarted.wsgi.application'
+WSGI_APPLICATION = 'surge_app.wsgi.application'
 
 
 # Database
