@@ -34,5 +34,5 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
     # POST requests for REST
-    url(r'^new_order/', new_order, name='new_order'),
+    url(r'^new_order/(?P<pk>[0-9]+)$', new_order, name='new_order'),
 ]
