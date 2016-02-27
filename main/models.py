@@ -40,6 +40,7 @@ class Order(models.Model):
 
 class Restuarant(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
     latitude = models.DecimalField(max_digits=10, decimal_places=7)
     longitude = models.DecimalField(max_digits=10, decimal_places=7)
 

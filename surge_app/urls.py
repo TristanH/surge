@@ -1,5 +1,7 @@
 from django.conf.urls import include, url
 
+from django.contrib.auth import views as auth_views
+
 from django.contrib import admin
 admin.autodiscover()
 
@@ -21,6 +23,10 @@ urlpatterns = [
     url(r'^db', db, name='db'),
     url(r'^admin/', include(admin.site.urls)),
 
+    url(r'^login/?$', auth_views.login,
+        {'template_name': 'login.html',},
+        name='login'),
+    url(r'^logout/', auth_views.logout),
     url(r'^', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

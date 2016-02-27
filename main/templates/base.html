@@ -16,7 +16,7 @@
         border-color: #845ac7
     }
     .jumbotron .btn-primary:hover {
-        background: #7646c1
+        background: #7646c1;
     }
     .jumbotron p {
         color: #d9ccee;
@@ -28,7 +28,7 @@
     }
     .jumbotron .lang-logo {
         display: block;
-        background: #b01302;
+        background: #e74c3c;
         border-radius: 50%;
         overflow: hidden;
         width: 100px;
@@ -40,20 +40,20 @@
         max-width: 100%
     }
 
-
   </style>
+  {% block extra_css %}{% endblock %}
 </head>
 <body>
 <nav class="navbar navbar-default navbar-static-top navbar-inverse">
   <div class="container">
     <ul class="nav navbar-nav">
       <li class="active">
-        <a href="/"><span class="glyphicon glyphicon-flash"></span> Surge</a>
+        <a href="/"><span class="glyphicon glyphicon-flash"></span>urge</a>
       </li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <li class="navbar-right">
-        <a href="#">Your Restaurant <span class="glyphicon glyphicon-book"></span></a>
+        {% if restaurant %}Chen's Pizza{% else %}<a href="{% url 'login' %}?next=bidding">Restaurant Login{% endif %} <span class="glyphicon glyphicon-book"></span></a>
       </li>
     </ul>
   </div>
