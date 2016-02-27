@@ -11,9 +11,10 @@ from serializers import OrderSerializer
 @api_view(['PUT'])
 @permission_classes((AllowAny,))
 def new_order(request, pk):
+    # TODO make a dummy user
     # TODO test
     try:
-        user = User.objects.get(pk=pk)
+        user = User.objects.all()[0]
     except:
         return Response(status=status.HTTP_404_NOT_FOUND)
     try:

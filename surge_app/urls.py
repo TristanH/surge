@@ -15,7 +15,8 @@ from rest_framework import routers, serializers, viewsets
 router = routers.DefaultRouter()
 
 # GET requests for REST
-router.register(r'keywords', KeywordViewSet)
+router.register(r'keywords_main', KeywordViewSetMain)
+router.register(r'keywords_modifier', KeywordViewSetModifier)
 
 # Examples:
 # url(r'^$', 'gettingstarted.views.home', name='home'),
