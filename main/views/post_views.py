@@ -14,13 +14,16 @@ def new_order(request, pk):
     # TODO test
     try:
         user = User.objects.get(pk=pk)
+    except:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    try:
         order = Order.objects.create(hungry_user=user,
                                  status=Order.IN_BIDDING,
                                  keywords=request.PUT['keywords'],
                                  latitude=request.PUT['latitude'],
                                  longitude=request.PUT['longitude'])
     except:
-        return Response("Bad request.", status=status.HTTP_400_BAD_REQUEST)
+        return Response("Bad request for " + user, status=status.HTTP_400_BAD_REQUEST)
 
     
     qs = Order.objects.filter(id=order.id)
