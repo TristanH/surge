@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
@@ -5,6 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 class Keyword(models.Model):
     string = models.CharField(max_length=255)
+    is_main = models.BooleanField()
 
 
 class KeywordGroup(models.Model):
@@ -19,23 +22,16 @@ class HungryUser(models.Model):
 class Order(models.Model):
     hungry_user = models.ForeignKey(HungryUser)
 
-    IN_BIDDING = 'IB'
-    NO_BID = 'NB'
-    SUCCESSFUL = "SU"
-    STATUSES = (
-        (IN_BIDDING, 'In Bidding'),
-        (NO_BID, 'No Bid'),
-        (SUCCESSFUL, 'Successful'),
-    )
-    status = models.CharField(max_length=2,
-                              choices=STATUSES,
-                              default=IN_BIDDING)
+    was_successful = models.NullBooleanField()
+
+    bidding_end_time = models.DateTimeField(default=datetime.now() + timedelta(seconds=90))
 
     keywords = models.ForeignKey(KeywordGroup)
 
     latitude = models.DecimalField(max_digits=10, decimal_places=7)
     longitude = models.DecimalField(max_digits=10, decimal_places=7)
 
+    description = models.CharField(max_length=511, null=True)
     # TODO: stripe payment token
 
 
@@ -52,7 +48,7 @@ def get_restaurant(self):
     except ObjectDoesNotExist:
         return None
 
-User.add_to_class('get_restaurant', get_restaurant)
+User.add_to_class('restaurant', get_restaurant)
 
 
 class Item(models.Model):
@@ -63,6 +59,8 @@ class Item(models.Model):
     restaurant = models.ForeignKey(Restuarant)
 
     keywords = models.ForeignKey(KeywordGroup)
+
+    description = models.CharField(max_length=511)
 
 
 class Bid(models.Model):

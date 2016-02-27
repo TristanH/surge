@@ -23,8 +23,11 @@ router.register(r'keywords', KeywordViewSet)
 
 urlpatterns = [
     url(r'^$', index, name='index'),
-    url(r'^db', db, name='db'),
     url(r'^admin/', include(admin.site.urls)),
+
+    url(r'^bidding/?$', bidding, name='bidding'),
+    url(r'^restaurant/(?P<restaurant_id>[0-9]+)/?$', restaurant_profile, name='restaurant_profile'),
+
 
     url(r'^login/?$', auth_views.login,
         {'template_name': 'login.html',},

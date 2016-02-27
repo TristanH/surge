@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block extra_css %}
+  <style type="text/css">
+    h1{
+      font-size: 60px;
+      margin-top: 5px;
+    }
+
+  </style>
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+<h1>Current Orders</h1>
+  <div class="alert alert-info text-center" role="alert">
+    To deploy your own copy, and learn the fundamentals of the Heroku platform, head over to the <a href="https://devcenter.heroku.com/articles/getting-started-with-python" class="alert-link">Getting Started with Python on Heroku</a> tutorial.
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-md-6">
+      <h3><span class="glyphicon glyphicon-info-sign"></span> How it works</h3>
+      <ul>
+        <li>You place your order, easily choosing what features you'd like your meal to have.</li>
+
+        <li>All of the nearby restaurants see your order, and bid on who can fulfill your order for the cheapest.</li>
+        <li>You can then browse through the offers and choose which meal you'd like to accept.</li>
+        <li>The meal is delivered right to your door.</li>
+
+        <li>You can scale your app, manage it, and deploy over <a href="https://addons.heroku.com/">150 add-on services</a>, from the Dashboard or CLI.</li>
+        <li>Check out the <a href="https://devcenter.heroku.com/articles/getting-started-with-python">Getting Started</a> guide to learn more!</li>
+      </ul>
+    </div>
+    <div class="col-md-6">
+      <h3><span class="glyphicon glyphicon-link"></span> Helpful Links</h3>
+      <ul>
+        <li><a href="https://www.heroku.com/home">Heroku</a></li>
+        <li><a href="https://devcenter.heroku.com/">Heroku Dev Center</a></li>
+        <li><a href="https://devcenter.heroku.com/articles/getting-started-with-python">Getting Started with Python on Heroku</a></li>
+        <li><a href="https://devcenter.heroku.com/articles/django-app-configuration">Configuring Django Apps for Heroku</a></li>
+      </ul>
+    </div>
+  </div> <!-- row -->
+
+{% for order in orders %}
+  <div class="alert alert-info text-center row" role="alert">
+      <div class="time-left col-md-2">
+        55
+      </div>
+      <div class="info-area col-md-8">
+      <h4>Order for {{order.keywords}} </h4>
+       Lalalalalala so much information here. List the keywords and distance away
+      </div>
+      <div class="col-md-2">
+      <button class="bid btn">
+        Bid on Order for $8.50
+      </button>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+
+{% endblock %}
