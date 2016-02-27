@@ -6,10 +6,13 @@ admin.autodiscover()
 # REST API code
 from main.views.views import *
 from main.views.view_sets import *
+from main.views.post_views import *
 from rest_framework import routers, serializers, viewsets
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
+
+# GET requests for REST
 router.register(r'keywords', KeywordViewSet)
 
 # Examples:
@@ -22,5 +25,8 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^', include(router.urls)),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+
+    # POST requests for REST
+    url(r'^company_kw/', company_kw, name='company_kw'),
 ]
