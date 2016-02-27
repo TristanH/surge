@@ -37,6 +37,7 @@ urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
-    # POST requests for REST
+    # Fancier requests for REST (this way is better)
     url(r'^new_order/(?P<pk>[0-9]+)$', new_order, name='new_order'),
+    url(r'^get_orders/(?P<pk>[0-9]+)$', get_orders, name='get_orders'),
 ]
