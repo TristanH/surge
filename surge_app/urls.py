@@ -5,22 +5,12 @@ admin.autodiscover()
 
 # REST API code
 from site.models import Keyword
+from site.views.viewsets import *
 from rest_framework import routers, serializers, viewsets
-
-# Serialization for [all models, for now just Keyword]
-class KeywordSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Keyword
-        fields = ('string')
-
-# ViewSets define the view behavior [all models, for now just Keyword]
-class KeywordViewSet(viewsets.ModelViewSet):
-    queryset = Keyword.objects.all()
-    serializer_class = KeywordSerializer
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
-router.register(r'keywords', KeywordViewSet)
+router.register(r'keywords', viewsets.KeywordViewSet)
 
 # Examples:
 # url(r'^$', 'gettingstarted.views.home', name='home'),
