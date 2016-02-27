@@ -3,15 +3,28 @@ from datetime import datetime, timedelta
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils.encoding import python_2_unicode_compatible
 
 
 class Keyword(models.Model):
     string = models.CharField(max_length=255)
     is_main = models.BooleanField()
 
+    def __str__(self):
+        if self.is_main:
+            return "Main: " + self.string
+        else:
+            return self.string
+
 
 class KeywordGroup(models.Model):
     tags = models.ManyToManyField(Keyword)
+
+    def __str__(self):
+        if self.tags:
+            return str(self.tags.all())
+        else:
+            return "None"
 
 
 class HungryUser(models.Model):
@@ -41,6 +54,9 @@ class Restuarant(models.Model):
     latitude = models.DecimalField(max_digits=10, decimal_places=7)
     longitude = models.DecimalField(max_digits=10, decimal_places=7)
 
+    def __str__(self):
+        return self.name
+
 
 def get_restaurant(self):
     try:
@@ -61,6 +77,9 @@ class Item(models.Model):
     keywords = models.ForeignKey(KeywordGroup)
 
     description = models.CharField(max_length=511)
+
+    def __str__(self):
+        return self.name
 
 
 class Bid(models.Model):
