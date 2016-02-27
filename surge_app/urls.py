@@ -17,8 +17,8 @@ router.register(r'keywords', viewsets.KeywordViewSet)
 # url(r'^blog/', include('blog.urls')),
 
 urlpatterns = [
-    url(r'^$', site.views.index, name='index'),
-    url(r'^db', site.views.db, name='db'),
+    url(r'^$', site.views.views.index, name='index'),
+    url(r'^db', site.views.views.db, name='db'),
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
