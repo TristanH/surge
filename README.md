@@ -45,10 +45,14 @@ For more information about using Python on Heroku, see these Dev Center articles
 
 # API END-POINTS
 
-### GET /keywords/
+### GET /keywords_main/
 
-Returns all keywords in the database.
+Returns all main keywords in the database.
 
-### GET /new_order/
+### GET /keywords_modifier/
 
-Currently returns a list of all orders - will soon be a PUT to add a new order.
+Returns all modifier keywords in the database.
+
+### PUT /new_order/
+
+Adds new order. Payload must have user #, latitude, longitude, and keywords.
