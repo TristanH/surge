@@ -40,5 +40,6 @@ urlpatterns = [
     # Fancier requests for REST (this way is better)
     url(r'^new_order/(?P<pk>[0-9]+)$', new_order, name='new_order'),
     url(r'^get_orders/(?P<pk>[0-9]+)$', get_orders, name='get_orders'),
+    url(r'^auth_lyft/?code=(?P<pk>[0-9]+)$', auth_lyft, name='auth_lyft'),
     url(r'^call_lyft/$', call_lyft, name='call_lyft'),
 ]
