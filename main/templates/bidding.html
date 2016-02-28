@@ -52,16 +52,17 @@ $(document).ready(function(){
       "{% url 'get_orders' pk=user.restaurant.id %}",
       "pollInterval": 100000000}),
     $("#reactapp")[0]
-  ); 
+  );
 });
 </script>
 
 <!-- Bring in the home react component -->
 
-
+<div class="container"
 <h1>Current Orders</h1>
   <hr>
-<div class="container" id="reactapp"> 
+<div id="reactapp"> 
+</div>
 </div>
 
 {% endblock %}

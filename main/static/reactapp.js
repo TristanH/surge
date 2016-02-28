@@ -21,15 +21,11 @@ window.Home = React.createClass({
     setInterval(this.loadBidsFromServer, this.props.pollInterval);
   },
 	getInitialState: function() {
-    	return {data: []};
+    	return {data: [{'order': {'name': "Cheese Pizza"}}]};
   	},
 	render: function() {
-		return (
-			<div>
-			<div>
-				{this.props.url}
-				{this.state.data}
-			</div>
+		var orderNodes = this.state.data.map(function(row) {
+	      return (
 			<div className="order-row alert alert-info text-center row" role="alert">
 	        <div className="order-col col-md-2">
 	          <span className="time-left">55</span>
@@ -45,7 +41,13 @@ window.Home = React.createClass({
 	          </button>
 	        </div>
 	      </div>
-	      </div>		
+	      );
+	    });
+		return (
+			<div>
+				{this.props.url}
+				{orderNodes}				
+			</div>		
 	    );
 	},
 });
