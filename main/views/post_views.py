@@ -32,8 +32,8 @@ def get_orders(request, pk):
     import json
     new_orders = []
     for dict_i in orders:
-        new_orders.append({"order" : OrderSerializer(dict_i["order"].data),
-                           "item"  : ItemSerializer(dict_i["item"].data)})
+        new_orders.append({"order" : OrderSerializer(dict_i["order"].data, context={'request': request}),
+                           "item"  : ItemSerializer(dict_i["item"].data, context={'request': request})})
     orders_json = json.dumps(new_orders)
     return Response(orders_json, status=status.HTTP_200_OK)
 
