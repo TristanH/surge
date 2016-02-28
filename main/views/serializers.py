@@ -1,4 +1,4 @@
-from main.models import Keyword, Order, Item
+from main.models import Keyword, Order, Item, Bid
 from rest_framework import serializers
 
 # Serialization for [all models, for now just Keyword]                             
@@ -16,3 +16,8 @@ class ItemSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Item
         fields = ('name', 'description')
+
+class BidSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Bid
+        fields = ('won')
