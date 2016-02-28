@@ -61,6 +61,6 @@ Gets all orders for resteraunts with <id>
 
 Adds new order for user with <id>. Payload must have latitude, longitude, and keywords.
 
-### POST /call_lyft/
+### POST /call_uber/
 
-Calls a lyft. Payload TBD after we get api access
+Calls an uber. Pass in slat, slng (starting longitude and latitude), elat, elng.

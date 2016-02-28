@@ -2,6 +2,10 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
+from requests import post
+from requests_oauth2 import OAuth2
+from uber_rides.session import Session
+from uber_rides.client import UberRidesClient
 
 from django.contrib.auth.models import User   
 
@@ -13,9 +17,32 @@ from views import get_bidding_orders
 
 @api_view(['POST'])
 @permission_classes((AllowAny,))
-def call_lyft(request):
-    return Response(status=HTTP_404_NOT_FOUND)
+def call_uber(request):
+    try:
+        session_token = "qvf2qjSKUccNPRJKvXMHljPrz4Nvf_55SjAvKMwl"
+        session = Session(server_token=session_token)
+        client = UberRidesClient(session, sandbox_mode=True)
+    except e:
+        return Response(e.info, status=status.HTTP_404_NOT_FOUND)
 
+    # Get a ride
+    try:
+        response = client.get_products(request.POST['slat'], request.POST['slng'])
+        products = response.json.get('products')
+        product_id = products[0].get('product_id')
+    except e:
+        return Response(e.info, status=status.HTTP_404_NOT_FOUND)
+
+    # Order the ride
+    try:
+        response = client.request_ride(product_id=product_id,
+                                   start_latitude=request.POST['slat'],
+                                   end_latitude=request.POST['elat'],
+                                   start_longitude=request.POST['slng'],
+                                   end_longitude=request.POST['elng'])
+    except e:
+        return Response(e.info, status=status.HTTP_404_NOT_FOUND)
+    return Response(status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 @permission_classes((AllowAny,))
