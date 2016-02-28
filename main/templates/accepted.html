@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block extra_css %}
+  <style type="text/css">
+    h1{
+      font-size: 60px;
+      margin-top: 5px;
+    }
+    h3{
+      margin-top: 0;
+    }
+
+    .time-left{
+      font-size: 50px;
+      display: block;
+    }
+
+    .bid{
+      white-space: normal;
+    }
+
+    .order-row{
+      display: table;
+      table-layout: fixed;
+    }
+    .order-col{
+      display: table-cell;
+      vertical-align: middle;
+     float: none;
+    }
+
+
+  </style>
+{% endblock %}
+
+{% block content %}
+
+  <script src="{% static 'moment.js' %}"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-dom.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.5/marked.min.js"></script>
+<!-- <script src="//cdnjs.cloudflare.com/ajax/libs/react/0.11.1/JSXTransformer.js"></script> -->
+
+<!-- <script src="{% static 'single-page-react.js' %}"></script>
+ -->
+<!-- Set which DOM element to insert React components into -->
+<script src="{% static 'reactapp.js' %}" type="text/babel"></script>
+
+<script type="text/babel">
+$(document).ready(function(){
+
+  ReactDOM.render(
+    React.createElement(Home, {'get_url': 
+      "{% url 'get_acc_orders' pk=user.restaurant.id %}",
+      'bid_url': "{% url 'place_bid' %}",
+      'restaurant_id': {{user.restaurant.id}},
+      "pollInterval": 500}),
+    $("#reactapp")[0]
+  );
+});
+</script>
+
+<!-- Bring in the home react component -->
+
+<div class="container">
+<h1>Your Accepted Orders</h1>
+  <hr>
+<div id="reactapp"> 
+</div>
+</div>
+
+{% endblock %}

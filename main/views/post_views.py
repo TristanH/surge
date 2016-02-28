@@ -12,7 +12,7 @@ from django.contrib.auth.models import User
 from main.models import Order, Restuarant, Bid
 from serializers import OrderSerializer, ItemSerializer, KeywordGroupSerializer, BidSerializer
 
-from views import get_bidding_orders
+from views import get_bidding_orders, get_acc_orders
 
 
 @api_view(['POST'])
@@ -61,6 +61,25 @@ def get_orders(request, pk):
     orders_json = json.dumps(new_orders)
     return Response(orders_json, status=status.HTTP_200_OK)
 
+@api_view(['GET'])
+@permission_classes((AllowAny,))
+def get_accepted_orders(request, pk):
+    try:
+        restauraunt = Restuarant.objects.get(pk=pk)
+    except:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    import pdb; pdb.set_trace()
+    orders = get_acc_orders(restauraunt)
+    import json
+    new_orders = []
+    for dict_i in orders:
+        new_orders.append({"order" : OrderSerializer(dict_i["order"], context={'request': request}).data,
+                           "item"  : ItemSerializer(dict_i["item"], context={'request': request}).data,
+                           "min_bid"  : BidSerializer(dict_i["min_bid"], context={'request': request}).data})
+    orders_json = json.dumps(new_orders)
+    return Response(orders_json, status=status.HTTP_200_OK)
+
 
 @api_view(['PUT'])
 @permission_classes((AllowAny,))
@@ -97,5 +116,7 @@ def new_order(request, pk):
 
     qs = Order.objects.filter(id=order.id)
     serializer = OrderSerializer(qs, many=True)
+
+    Bid.make_default(order.id)
     return Response(serializer.data, status=status.HTTP_201_CREATED)
 

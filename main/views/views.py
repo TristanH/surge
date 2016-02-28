@@ -17,6 +17,10 @@ def index(request):
 def bidding(request):
     return render(request, 'bidding.html', {'orders': get_bidding_orders(request.user.restaurant())})
 
+@login_required
+def accepted(request):
+    return render(request, 'accepted.html', {'orders': get_accepted_orders(request.user.restaurant())})
+
 
 def get_bidding_orders(restaurant):
     # Expiriy Time after now
@@ -49,6 +53,36 @@ def get_bidding_orders(restaurant):
                     'min_bid': get_min_bid(order.id),
                 })
                 break
+
+    return matching_orders
+
+
+def get_acc_orders(restaurant):
+    # Expiriy Time after now
+    # Location nearby (hack? same city)
+    # Keywords all match some meal that the restaurant has
+        # Load all orders
+        # Load all items
+        # Only take the ones with all shared keywords
+    import pdb; pdb.set_trace()
+
+    all_orders = Order.objects.filter(
+        was_successful=True,
+    )
+
+    all_items = Item.objects.filter(restaurant_id=restaurant.id)
+
+    matching_orders = []
+
+    for order in all_orders:
+        bid = Bid.objects.get(won=True, order=order)
+        if all_items.filter(id=bid.item_id).exists():
+            matching_orders.append({
+                'order': order,
+                'item': bid.item,
+                'min_bid': bid,
+            })
+            break
 
     return matching_orders
 

@@ -57,7 +57,7 @@ window.Home = React.createClass({
 	          <span> Seconds left </span>
 	        </div>
 	        <div className="order-col info-area col-md-8">
-	          <h3>Order for {row.item.name} </h3>
+	          <h3>Order for <i>"{row.item.name}"</i> (0.8 miles away) </h3>
 	          <p><b>Keywords ordered:</b> {keywords.join(", ")}</p>
 	          <p><i>{row.order.description}</i></p>
 	        </div>
