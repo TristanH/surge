@@ -93,17 +93,19 @@ def get_accepted_orders(request, pk):
     return Response(orders_json, status=status.HTTP_200_OK)
 
 
-@api_view(['PUT'])
+@api_view(['PUT', 'GET'])
 @permission_classes((AllowAny,))
 def new_order(request, pk):
     try:
-        user = User.objects.get_or_create(username=request.PUT['username'])
-        h_user = HungryUser.objects.get_or_create(user=user)
+            user = User.objects.get_or_create(username=request.PUT['username'])
+            h_user = HungryUser.objects.get_or_create(user=user)
     except:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response("No user.", status=status.HTTP_404_NOT_FOUND)
     try:
-        #TODO(simon): make this work
-        group = KeywordGroup.objects.create(tags=json.loads(request.POST['keywords']))
+        group = KeywordGroup.objects.create()
+        for i in json.loads(request.POST['keywords']):
+            new_word = Keyword.objects.get(string=i)
+            group.tags.add(new_word)
     except:
         return Response("Bad request for " + user.username, status=status.HTTP_400_BAD_REQUEST)
 
