@@ -15,24 +15,33 @@ from serializers import OrderSerializer, ItemSerializer
 from views import get_bidding_orders
 
 
-@api_view(['PUT'])
+@api_view(['POST'])
 @permission_classes((AllowAny,))
 def call_uber(request):
-    session_token = "qvf2qjSKUccNPRJKvXMHljPrz4Nvf_55SjAvKMwl"
-    session = Session(server_token=session_token)
-    client = UberRidesClient(session, sandbox_mode=True)
+    try:
+        session_token = "qvf2qjSKUccNPRJKvXMHljPrz4Nvf_55SjAvKMwl"
+        session = Session(server_token=session_token)
+        client = UberRidesClient(session, sandbox_mode=True)
+    except e:
+        return Response(e.info, status=status.HTTP_404_NOT_FOUND)
 
     # Get a ride
-    response = client.get_products(request.GET.get('slat'), request.GET.get('slng'))
-    products = response.json.get('products')
-    product_id = products[0].get('product_id')
+    try:
+        response = client.get_products(request.POST['slat'], request.POST['slng'])
+        products = response.json.get('products')
+        product_id = products[0].get('product_id')
+    except e:
+        return Response(e.info, status=status.HTTP_404_NOT_FOUND)
 
     # Order the ride
-    response = client.request_ride(product_id=product_id,
-                                   start_latitude=request.GET.get('slat'),
-                                   end_latitude=request.GET.get('elat'),
-                                   start_longitude=request.GET.get('slng'),
-                                   end_longitude=request.GET.get('elng'))
+    try:
+        response = client.request_ride(product_id=product_id,
+                                   start_latitude=request.POST['slat'],
+                                   end_latitude=request.POST['elat'],
+                                   start_longitude=request.POST['slng'],
+                                   end_longitude=request.POST['elng'])
+    except e:
+        return Response(e.info, status=status.HTTP_404_NOT_FOUND)
     return Response(status=status.HTTP_200_OK)
 
 @api_view(['GET'])
