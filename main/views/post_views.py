@@ -6,7 +6,7 @@ from rest_framework.permissions import AllowAny
 from django.contrib.auth.models import User   
 
 from main.models import Order, Restuarant
-from serializers import OrderSerializer
+from serializers import OrderSerializer, ItemSerializer
 
 from views import get_bidding_orders
 
@@ -24,6 +24,10 @@ def get_orders(request, pk):
         return Response(status=status.HTTP_404_NOT_FOUND)
     orders = get_bidding_orders(restauraunt)
     import json
+    new_orders = []
+    for dict_i in orders:
+        new_orders.append({"order" : OrderSerializer(dict_i["order"]),
+                           "item"  : ItemSerializer(dict_i["item"])})
     orders_json = json.dumps(orders)
     return Response(orders_json, status=status.HTTP_200_OK)
 
