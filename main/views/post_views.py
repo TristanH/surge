@@ -10,10 +10,12 @@ from serializers import OrderSerializer, ItemSerializer
 
 from views import get_bidding_orders
 
+
 @api_view(['POST'])
 @permission_classes((AllowAny,))
 def call_lyft(request):
     return Response(status=HTTP_404_NOT_FOUND)
+
 
 @api_view(['GET'])
 @permission_classes((AllowAny,))
@@ -26,9 +28,9 @@ def get_orders(request, pk):
     import json
     new_orders = []
     for dict_i in orders:
-        new_orders.append({"order" : OrderSerializer(dict_i["order"]),
-                           "item"  : ItemSerializer(dict_i["item"])})
-    orders_json = json.dumps(orders)
+        new_orders.append({"order" : OrderSerializer(dict_i["order"], context={'request': request}).data,
+                           "item"  : ItemSerializer(dict_i["item"], context={'request': request}).data})
+    orders_json = json.dumps(new_orders)
     return Response(orders_json, status=status.HTTP_200_OK)
 
 @api_view(['PUT'])
@@ -49,7 +51,6 @@ def new_order(request, pk):
     except:
         return Response("Bad request for " + user, status=status.HTTP_400_BAD_REQUEST)
 
-    
     qs = Order.objects.filter(id=order.id)
     serializer = OrderSerializer(qs, many=True)
     return Response(serializer.data, status=status.HTTP_201_CREATED)
