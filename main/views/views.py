@@ -19,7 +19,7 @@ def bidding(request):
 
 @login_required
 def accepted(request):
-    return render(request, 'accepted.html', {'orders': get_accepted_orders(request.user.restaurant())})
+    return render(request, 'accepted.html', {'orders': get_acc_orders(request.user.restaurant())})
 
 
 def get_bidding_orders(restaurant):
@@ -64,11 +64,9 @@ def get_acc_orders(restaurant):
         # Load all orders
         # Load all items
         # Only take the ones with all shared keywords
-    import pdb; pdb.set_trace()
-
     all_orders = Order.objects.filter(
-        was_successful=True,
-    )
+        bidding_end_time__lt=timezone.now(),
+    ).order_by("bidding_end_time")
 
     all_items = Item.objects.filter(restaurant_id=restaurant.id)
 
@@ -88,7 +86,7 @@ def get_acc_orders(restaurant):
 
 
 def get_min_bid(order_id):
-    min_bid = Bid.objects.filter(order_id=order_id, won=None).order_by('price')
+    min_bid = Bid.objects.filter(order_id=order_id).order_by('price')
     if min_bid.exists():
         min_bid = min_bid[0]
     else:
@@ -103,8 +101,13 @@ def place_bid(request):
     item_id = request.GET.get('item')
     amount = int(request.GET.get('bid'))
     restaurant = request.user.restaurant()
-    if amount < get_min_bid(order_id):
-        new_bid = Bid(item_id=item_id, order_id=order_id, won=None, price=amount)
+
+    existing_bid = get_min_bid(order_id)
+
+    if amount < existing_bid.price:
+        existing_bid.won=False
+        existing_bid.save()
+        new_bid = Bid(item_id=item_id, order_id=order_id, won=True, price=amount)
         new_bid.save()
     else:
         return HttpResponse("You ordered too late!")

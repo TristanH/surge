@@ -10,3 +10,4 @@ class KeywordViewSetMain(viewsets.ModelViewSet):
 class KeywordViewSetModifier(viewsets.ModelViewSet):
     queryset = Keyword.objects.filter(is_main=False)
     serializer_class = KeywordSerializer
+    

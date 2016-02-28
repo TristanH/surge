@@ -24,7 +24,7 @@ def call_uber(request):
         session_token = "qvf2qjSKUccNPRJKvXMHljPrz4Nvf_55SjAvKMwl"
         session = Session(server_token=session_token)
         client = UberRidesClient(session, sandbox_mode=True)
-    except e:
+    except Exception as e:
         return Response(e.info, status=status.HTTP_404_NOT_FOUND)
 
     # Get a ride
@@ -32,19 +32,30 @@ def call_uber(request):
         response = client.get_products(request.POST['slat'], request.POST['slng'])
         products = response.json.get('products')
         product_id = products[0].get('product_id')
-    except e:
+    except Exception as e:
         return Response(e.info, status=status.HTTP_404_NOT_FOUND)
 
     # Order the ride
     try:
+        import pdb; pdb.set_trace()
         response = client.request_ride(product_id=product_id,
-                                   start_latitude=request.POST['slat'],
-                                   end_latitude=request.POST['elat'],
-                                   start_longitude=request.POST['slng'],
-                                   end_longitude=request.POST['elng'])
-    except e:
+                                   start_latitude=float(request.POST['slat']),
+                                   end_latitude=float(request.POST['elat']),
+                                   start_longitude=float(request.POST['slng']),
+                                   end_longitude=float(request.POST['elng']))
+    except Exception as e:
         return Response(e.info, status=status.HTTP_404_NOT_FOUND)
     return Response(status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes((AllowAny,))
+def user_orders(request, pk):
+    user = User.objects.get(username=request.GET['username'])
+    hungry = HungryUser.objects.get(user=user)
+    serializer = OrderSerializer(Orders.filter(hungry_user=hungry, many=True))
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 @api_view(['GET'])
 @permission_classes((AllowAny,))
@@ -71,7 +82,6 @@ def get_accepted_orders(request, pk):
     except:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    import pdb; pdb.set_trace()
     orders = get_acc_orders(restauraunt)
     import json
     new_orders = []
