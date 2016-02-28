@@ -23,7 +23,7 @@ def call_uber(request):
     client = UberRidesClient(session, sandbox_mode=True)
 
     # Get a ride
-    response = client.get_products(request.GET.get('slat'), request.GET.get('slng')
+    response = client.get_products(request.GET.get('slat'), request.GET.get('slng'))
     products = response.json.get('products')
     product_id = products[0].get('product_id')
 
