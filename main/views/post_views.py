@@ -9,8 +9,8 @@ from uber_rides.client import UberRidesClient
 
 from django.contrib.auth.models import User
 
-from main.models import Order, Restuarant, Bid
-from serializers import OrderSerializer, ItemSerializer, KeywordGroupSerializer, BidSerializer
+from main.models import Order, Restuarant, Bid, Keyword
+from serializers import OrderSerializer, ItemSerializer, KeywordGroupSerializer, BidSerializer, KeywordSerializer
 
 from views import get_bidding_orders, get_acc_orders
 
@@ -83,40 +83,41 @@ def get_accepted_orders(request, pk):
 
 @api_view(['PUT'])
 @permission_classes((AllowAny,))
-def new_keyword(request, pk):
+def new_order(request, pk):
     try:
-        user = User.objects.all()[0]
+        user = User.objects.get_or_create(username=request.PUT['username'])
+        h_user = HungryUser.objects.get_or_create(user=user)
     except:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    try:    
+    try:
+        #TODO(simon): make this work
         group = KeywordGroup.objects.create(tags=request.POST['keywords'])
     except:
-        return Response("Bad request for " + user, sttus=status.HTTP_400_BAD_REQUEST)
-    qs = KeywordGroup.objects.filter(id=group.id)
-    serializer = KeywordGroupSerializer(qs, many=True)
-    return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response("Bad request for " + user.username, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['PUT'])
-@permission_classes((AllowAny,))
-def new_order(request, pk):
-    # TODO make a dummy user
-    # TODO test
-    try:
-        user = User.objects.all()[0]
-    except:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-    try:
-        order = Order.objects.create(hungry_user=user,
+    order = Order.objects.create(hungry_user=user,
                                  status=Order.IN_BIDDING,
-                                 keywords=request.PUT['keywords'],
+                                 keywords=group,
                                  latitude=request.PUT['latitude'],
                                  longitude=request.PUT['longitude'])
-    except:
-        return Response("Bad request for " + user, status=status.HTTP_400_BAD_REQUEST)
 
     qs = Order.objects.filter(id=order.id)
     serializer = OrderSerializer(qs, many=True)
 
     Bid.make_default(order.id)
     return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+@api_view(['GET'])
+@permission_classes((AllowAny,))
+def all_keywords(request):
+    ks = KeywordSerializer(Keyword.objects.all(), many=True)
+    return Response(ks.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes((AllowAny,))
+def child_keywords(request):
+    ks = KeywordSerializer(Keyword.objects.all(), many=True)
+    return Response(ks.data, status=status.HTTP_200_OK)
+
 

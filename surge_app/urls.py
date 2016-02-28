@@ -40,10 +40,11 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
     # Fancier requests for REST (this way is better)
-    url(r'^new_order/(?P<pk>[0-9]+)$', new_order, name='new_order'),
-    url(r'^new_keyword/(?P<pk>[0-9]+)$', new_keyword, name='new_keyword'),
+    url(r'^new_order/?$', new_order, name='new_order'),
     url(r'^get_orders/(?P<pk>[0-9]+)$', get_orders, name='get_orders'),
     url(r'^get_acc_orders/(?P<pk>[0-9]+)$', get_accepted_orders, name='get_acc_orders'),
+    url(r'^all_keywords/$', all_keywords, name='all_keywords'),
+
 
     url(r'^place_bid/$', place_bid, name='place_bid'),
     url(r'^call_uber/$', call_uber, name="call_uber"),
