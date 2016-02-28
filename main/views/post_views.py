@@ -4,7 +4,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
-from requests import post
+from requests import post, get
 from requests_oauth2 import OAuth2
 from uber_rides.session import Session
 from uber_rides.client import UberRidesClient
@@ -47,6 +47,23 @@ def call_uber(request):
         return Response(e.info, status=status.HTTP_404_NOT_FOUND)
     return Response(status=status.HTTP_200_OK)
 
+@api_view(['POST'])
+@permission_classes((AllowAny,))
+def estimate_uber(request):
+    # get lng/lat
+    slng = request.POST.get('slng', '')
+    elng = request.POST.get('elng', '')
+    slat = request.POST.get('slat', '')
+    elat = request.POST.get('elat', '')
+    session_token = "qvf2qjSKUccNPRJKvXMHljPrz4Nvf_55SjAvKMwl"
+    params={'start_latitude':slat,
+            'start_longitude':slng,
+            'end_longitude':elng,
+            'end_latitude':elat,
+            'server_token':session_token}
+    response = get("https://api.uber.com/v1/estimates/time", params=params)
+    import json
+    return Response(response, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 @permission_classes((AllowAny,))

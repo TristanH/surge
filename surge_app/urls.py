@@ -48,4 +48,5 @@ urlpatterns = [
 
     url(r'^place_bid/$', place_bid, name='place_bid'),
     url(r'^call_uber/$', call_uber, name="call_uber"),
+    url(r'^estimate_uber/$', estimate_uber, name='estimate_uber'),
 ]
