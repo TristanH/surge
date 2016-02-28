@@ -58,9 +58,9 @@ window.Home = React.createClass({
 	        </div>
 	        <div className="order-col col-md-3 uberstuff">
 	          <a href="#" onClick={self.deliverOrder.bind(self, row)}>
-	          <button className={"bid btn btn-default"}>
+	          <button className={"bid btn btn-default" + (alreadyWinning ? " disabled" : "")}>
 	          	<img height="50px" src="/static/uber.png"/>
-	          	<span>Food ready? Deliver with Uber.</span>
+	          	<span>{!alreadyWinning ? "Food ready? Deliver with Uber." : ("Your uber will arrive " + moment(row.order.pickup_time).fromNow())}</span>
 	          </button>
 	          </a>
 	        </div>

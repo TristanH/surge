@@ -68,16 +68,18 @@ def estimate_uber(request):
 
     params={'start_latitude':slat,
             'start_longitude':slng,
-            'end_longitude':elng,
-            'end_latitude':elat,
             'server_token':session_token}
     response = get("https://api.uber.com/v1/estimates/time", params=params)
-    import pdb; pdb.set_trace()
+
+    try:
+        timeto = response.json()['times'][0]['estimate']
+    except Exception:
+        timeto=180
+
     order = Order.objects.get(id=request.GET['order_id'])
-    order.pickup_time = timezone.now() + timedelta(minutes=4)
+    order.pickup_time = timezone.now() + timedelta(seconds=timeto)
     order.save()
 
-    import json
     return Response(response, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
