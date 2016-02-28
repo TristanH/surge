@@ -10,4 +10,4 @@ class KeywordSerializer(serializers.HyperlinkedModelSerializer):
 class OrderSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Order
-        fields = ('hungry_user')
+        fields = ('hungry_user',)
