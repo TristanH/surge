@@ -1,4 +1,5 @@
-from main.models import Keyword, Order, Item, KeywordGroup
+from main.models import Keyword, Order, Item, KeywordGroup, Bid
+
 from rest_framework import serializers
 
 # Serialization for [all models, for now just Keyword]                             
@@ -31,3 +32,9 @@ class ItemSerializer(serializers.ModelSerializer):
         model = Item
         fields=('name', 'restaurant', 'keywords', 'description')
         depth = 1
+
+
+class BidSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Bid
+        fields = ('won')
