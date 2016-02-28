@@ -12,25 +12,6 @@ from serializers import OrderSerializer, ItemSerializer
 
 from views import get_bidding_orders
 
-@api_view(['GET'])
-@permission_classes((AllowAny,))
-def auth_lyft(request, pk):
-    # Called by lyft when a user authroizes us
-    client_id = 'MjLVKB_W2uRW'
-    client_secret = 'mdQv-qTjIJeO6afXMAbF6ratc8iQ5iM4'
-    auth_request = post('https://api.lyft.com/oauth/token', auth=(client_id, client_secret),
-                        params={'grant_type':'authorization_code', 'code':pk})
-    import json
-    token = json.loads(auth_request.json())['access_token']
-    with open("insecure_token.txt", "w") as f:
-        f.write(token)
-    return Response(status=HTTP_200_OK)
-
-@api_view(['POST'])
-@permission_classes((AllowAny,))
-def call_lyft(request):
-    return Response(status=HTTP_404_NOT_FOUND)
-
 
 @api_view(['GET'])
 @permission_classes((AllowAny,))
