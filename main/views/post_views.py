@@ -71,6 +71,7 @@ def get_accepted_orders(request, pk):
     except:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
+    import pdb; pdb.set_trace()
     orders = get_acc_orders(restauraunt)
     import json
     new_orders = []
@@ -111,7 +112,6 @@ def new_order(request, pk):
 @api_view(['POST'])
 @permission_classes((AllowAny,))
 def child_keywords(request):
-    import pdb; pdb.set_trace()
     pre_kws = set(json.loads(request.POST['keywords']))
     valid_children = set()
 
