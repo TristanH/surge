@@ -71,7 +71,6 @@ def get_accepted_orders(request, pk):
     except:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    import pdb; pdb.set_trace()
     orders = get_acc_orders(restauraunt)
     import json
     new_orders = []
