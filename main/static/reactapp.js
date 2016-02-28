@@ -42,14 +42,14 @@ window.Home = React.createClass({
     },
 
 	render: function() {
-		  var self = this;
-		  var orderNodes = this.state.data.map(function(row) {
-	      var timeToOrder = moment(row.order.bidding_end_time).diff(moment.utc(), "seconds");
+		var self = this;
+		var orderNodes = this.state.data.map(function(row) {
+		  var timeToOrder = moment(row.order.bidding_end_time).diff(moment.utc(), "seconds");
 		  var keywords = row.order.keywords.tags.map(function(tag){return "#" + tag.string})	      
 		  var curBidPrice = ((row.min_bid.price)/100.0).toFixed(2);
 		  var newBidPrice = ((row.min_bid.price - 50)/100.0).toFixed(2);
 		  
-		  var alreadyWinning = row.min_bid.item.restaurant === self.props.restaurant_id;
+		  var alreadyWinning = row.min_bid.item && (row.min_bid.item.restaurant === self.props.restaurant_id);
 		  return (
 			<div key={row.order.id} className={"order-row alert text-center row " + (alreadyWinning ? "alert-success" : "alert-info")} role="alert">
 	        <div className="order-col col-md-2">

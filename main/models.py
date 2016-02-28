@@ -90,7 +90,7 @@ class Item(models.Model):
 
 
 class Bid(models.Model):
-    item = models.ForeignKey(Item)
+    item = models.ForeignKey(Item, null=True)
     order = models.ForeignKey(Order)
     won = models.NullBooleanField()
 
@@ -100,3 +100,9 @@ class Bid(models.Model):
     @property
     def restaurant(self):
         return self.item.restaurant
+
+    @staticmethod
+    def make_default(order_id):
+        bid = Bid(price=1500, order_id=order_id)
+        bid.save()
+        return bid
