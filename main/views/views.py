@@ -1,4 +1,4 @@
-from datetime import datetime
+from django.utils import timezone
 
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -24,7 +24,7 @@ def get_bidding_orders(restaurant):
         # Only take the ones with all shared keywords
     all_orders = Order.objects.filter(
         was_successful=None,
-        bidding_end_time__gt=datetime.now(),
+        bidding_end_time__gt=timezone.now(),
     )
 
     all_items = Item.objects.filter(restaurant_id=restaurant.id)
@@ -50,4 +50,6 @@ def get_bidding_orders(restaurant):
 
 
 def restaurant_profile(request, restaurant_id):
-    return render(request, 'index.html')
+    return render(request, 'restaurant_profile.html', {
+        'items': Item.objects.filter(restaurant_id=request.user.restaurant().id)
+    })

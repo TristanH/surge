@@ -5,55 +5,19 @@
   <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-  <style type="text/css">
-    .jumbotron {
-        background: #532f8c;
-        color: white;
-        padding-bottom: 80px
-    }
-    .jumbotron .btn-primary {
-        background: #845ac7;
-        border-color: #845ac7
-    }
-    .jumbotron .btn-primary:hover {
-        background: #7646c1;
-    }
-    .jumbotron p {
-        color: #d9ccee;
-        max-width: 75%;
-        margin: 1em auto 2em
-    }
-    .navbar+.jumbotron {
-        margin-top: -20px
-    }
-    .jumbotron .lang-logo {
-        display: block;
-        background: #e74c3c;
-        border-radius: 50%;
-        overflow: hidden;
-        width: 100px;
-        height: 100px;
-        margin: auto;
-        border: 2px solid white
-    }
-    .jumbotron .lang-logo img {
-        max-width: 100%
-    }
-
-  </style>
   {% block extra_css %}{% endblock %}
 </head>
 <body>
 <nav class="navbar navbar-default navbar-static-top navbar-inverse">
   <div class="container">
     <ul class="nav navbar-nav">
-      <li class="active">
+      <li {% url 'index' as home_url %}{% if request.get_full_path == home_url %}class="active"{% endif %}>
         <a href="/"><span class="glyphicon glyphicon-flash"></span>urge</a>
       </li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
-      <li class="navbar-right">
-        {% if user.restaurant %}<a href="{% url 'restaurant_profile' restaurant_id=user.restaurant.id %}">{{user.restaurant.name}}{% else %}<a href="{% url 'login' %}?next=bidding">Restaurant Login{% endif %} <span class="glyphicon glyphicon-book"></span></a>
+      <li class="navbar-right" >
+        {% if user.restaurant %}<a href="{% url 'restaurant_profile' restaurant_id=user.restaurant.id %}">{{user.restaurant.name}}{% else %}<a href="{% url 'login' %}?next=bidding">Restaurant Login{% endif %} <span class="glyphicon glyphicon-cutlery"></span></a>
       </li>
     </ul>
   </div>

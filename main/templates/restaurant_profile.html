@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block extra_css %}
+  <style type="text/css">
+  h1{
+    margin-top: 10px;
+    font-size: 50px;
+  }
+  h2{
+    margin-top: 0;
+    text-align: left;
+  }
+  h5{
+    text-align: left;
+  }
+    .jumbotron {
+        background: #532f8c;
+        color: white;
+        padding-bottom: 80px
+    }
+    .jumbotron .btn-primary {
+        background: #845ac7;
+        border-color: #845ac7
+    }
+    .jumbotron .btn-primary:hover {
+        background: #7646c1;
+    }
+    .jumbotron p {
+        color: #d9ccee;
+        max-width: 75%;
+        margin: 1em auto 2em
+    }
+    .navbar+.jumbotron {
+        margin-top: -20px
+    }
+    .jumbotron .lang-logo {
+        display: block;
+        background: #e74c3c;
+        border-radius: 50%;
+        overflow: hidden;
+        width: 200px;
+        height: 200px;
+        border: 2px solid white
+    }
+    .jumbotron .lang-logo img {
+        max-width: 100%
+    }
+    .food-logo {
+        display: block;
+        background: #e74c3c;
+        border-radius: 50%;
+        overflow: hidden;
+        width: 120px;
+        height: 120px;
+        border: 2px solid white
+    }
+    .food-logo img {
+        max-height: 100%
+    }
+
+  </style>
+{% endblock %}
+
+{% block content %}
+
+<div class="jumbotron">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+        <a href="/" class="lang-logo">
+          <img src="{% static 'surge-logo.png'%}">
+        </a>
+      </div>
+      <div class="col-md-9">
+        <h1>{{user.restaurant.name}}</h1>
+        <p>Located at: 3180 18th St.</p>
+        <a type="button" class="btn btn-lg btn-default" href="https://devcenter.heroku.com/articles/getting-started-with-python"><span class="glyphicon glyphicon-flash"></span> View orders to bid on</a>
+        <a type="button" class="btn btn-lg btn-primary" href="#menu"><span class="glyphicon glyphicon-glass"></span> Add more meals to your menu</a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <a name="menu"></a>
+  <h1><span class="glyphicon glyphicon-th-list"></span> Your Menu</h1>
+  {% for item in items %}
+    <div class="alert alert-info" role="alert">
+      <div class="row">
+      <div class="col-md-2">
+        <span class="food-logo">
+          <img src="http://jlincatering.com/wp-content/uploads/2016/01/pizza-tumblr-tumblr-nztvk1ldea1rlw3m5o1-500.jpg">
+        </span>
+      </div>
+      <div class="col-md-10">
+      <h2>{{item.name}}</h2>
+      <h5>Keywords: {{item.keywords}}</h5>
+      <p>
+      {{ item.description }}
+      </p>
+      </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

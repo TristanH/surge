@@ -1,4 +1,5 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
+from django.utils import timezone
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -11,18 +12,21 @@ class Keyword(models.Model):
     is_main = models.BooleanField()
 
     def __str__(self):
-        if self.is_main:
-            return "Main: " + self.string
-        else:
-            return self.string
+        # if self.is_main:
+        #     return "Main: " + self.string
+        # else:
+        #     return self.string
+        return self.string
 
 
 class KeywordGroup(models.Model):
     tags = models.ManyToManyField(Keyword)
 
     def __str__(self):
+        tags = ["#" + str(tag) for tag in (list(self.tags.filter(is_main=True)) + list(self.tags.filter(is_main=False)))]
+
         if self.tags:
-            return str(self.tags.all())
+            return ", ".join(tags)
         else:
             return "None"
 
@@ -37,7 +41,7 @@ class Order(models.Model):
 
     was_successful = models.NullBooleanField()
 
-    bidding_end_time = models.DateTimeField(default=datetime.now() + timedelta(seconds=90))
+    bidding_end_time = models.DateTimeField(default=timezone.now() + timedelta(seconds=90))
 
     keywords = models.ForeignKey(KeywordGroup)
 
