@@ -73,6 +73,9 @@ def get_acc_orders(restaurant):
     matching_orders = []
 
     for order in all_orders:
+        if order.pickup_time and order.pickup_time < timezone.now():
+            continue
+
         bid = Bid.objects.get(won=True, order=order)
         if all_items.filter(id=bid.item_id).exists():
             matching_orders.append({

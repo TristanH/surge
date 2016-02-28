@@ -144,6 +144,7 @@ def new_order(request):
 
     order = Order.objects.create(hungry_user=h_user,
                                  was_successful=None,
+                                 description=request.GET['description'],
                                  keywords=group,
                                  latitude=37.762385,
                                  longitude=-122.4167899)
