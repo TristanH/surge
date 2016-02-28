@@ -1,3 +1,5 @@
+from django.utils import timezone
+
 from main.models import Keyword, Order, Item, KeywordGroup, Bid
 
 from rest_framework import serializers
@@ -14,27 +16,27 @@ class KeywordGroupSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:                                                                    
         model = KeywordGroup
         depth=1
-        fields=('tags',)                                              
+        fields=('tags',)        
+
 
 class OrderSerializer(serializers.ModelSerializer):
-    # description = serializers.CharField(max_length=511)
-
     class Meta:
         model = Order
-        fields=('bidding_end_time', 'keywords', 'latitude', 'longitude', 'description')
-        depth = 1
+        fields=('id', 'bidding_end_time', 'keywords', 'latitude', 'longitude', 'description')
+        depth = 2
         # fields = ('description', 'bidding_end_time', 'keywords')
+
 
 class ItemSerializer(serializers.ModelSerializer):
     keywords=KeywordGroupSerializer()
 
     class Meta:
         model = Item
-        fields=('name', 'restaurant', 'keywords', 'description')
+        fields=('id', 'name', 'restaurant', 'keywords', 'description')
         depth = 1
 
 
-class BidSerializer(serializers.HyperlinkedModelSerializer):
+class BidSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bid
-        fields = ('won')
+        depth=1

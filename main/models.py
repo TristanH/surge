@@ -36,12 +36,15 @@ class HungryUser(models.Model):
     # TODO: stripe user info here
 
 
+def bid_time():
+    return timezone.now() + timedelta(seconds=90)
+
 class Order(models.Model):
     hungry_user = models.ForeignKey(HungryUser)
 
     was_successful = models.NullBooleanField()
 
-    bidding_end_time = models.DateTimeField(default=timezone.now() + timedelta(seconds=90))
+    bidding_end_time = models.DateTimeField(default=bid_time)
 
     keywords = models.ForeignKey(KeywordGroup)
 
@@ -90,6 +93,9 @@ class Bid(models.Model):
     item = models.ForeignKey(Item)
     order = models.ForeignKey(Order)
     won = models.NullBooleanField()
+
+    # In cents
+    price = models.IntegerField()
 
     @property
     def restaurant(self):

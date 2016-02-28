@@ -10,7 +10,7 @@ from uber_rides.client import UberRidesClient
 from django.contrib.auth.models import User   
 
 from main.models import Order, Restuarant, Bid
-from serializers import OrderSerializer, ItemSerializer, KeywordGroupSerializer
+from serializers import OrderSerializer, ItemSerializer, KeywordGroupSerializer, BidSerializer
 
 from views import get_bidding_orders
 
@@ -56,9 +56,11 @@ def get_orders(request, pk):
     new_orders = []
     for dict_i in orders:
         new_orders.append({"order" : OrderSerializer(dict_i["order"], context={'request': request}).data,
-                           "item"  : ItemSerializer(dict_i["item"], context={'request': request}).data})
+                           "item"  : ItemSerializer(dict_i["item"], context={'request': request}).data,
+                           "min_bid"  : BidSerializer(dict_i["min_bid"], context={'request': request}).data})
     orders_json = json.dumps(new_orders)
     return Response(orders_json, status=status.HTTP_200_OK)
+
 
 @api_view(['PUT'])
 @permission_classes((AllowAny,))
@@ -96,3 +98,4 @@ def new_order(request, pk):
     qs = Order.objects.filter(id=order.id)
     serializer = OrderSerializer(qs, many=True)
     return Response(serializer.data, status=status.HTTP_201_CREATED)
+
