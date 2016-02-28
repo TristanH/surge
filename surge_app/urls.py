@@ -27,7 +27,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^bidding/?$', bidding, name='bidding'),
-    url(r'^restaurant/(?P<restaurant_id>[0-9]+)/?$', restaurant_profile, name='restaurant_profile'),
+    url(r'^restaurant/(?p<restaurant_id>[0-9]+)/?$', restaurant_profile, name='restaurant_profile'),
 
 
     url(r'^login/?$', auth_views.login,
@@ -40,4 +40,5 @@ urlpatterns = [
     # Fancier requests for REST (this way is better)
     url(r'^new_order/(?P<pk>[0-9]+)$', new_order, name='new_order'),
     url(r'^get_orders/(?P<pk>[0-9]+)$', get_orders, name='get_orders'),
+    url(r'^call_lyft/$', call_lyft, name='call_lyft'),
 ]

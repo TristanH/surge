@@ -10,6 +10,11 @@ from serializers import OrderSerializer
 
 from views import get_bidding_orders
 
+@api_view(['POST'])
+@permission_classes((AllowAny,))
+def call_lyft(request):
+    return Response(status=HTTP_404_NOT_FOUND)
+
 @api_view(['GET'])
 @permission_classes((AllowAny,))
 def get_orders(request, pk):
@@ -18,8 +23,9 @@ def get_orders(request, pk):
     except:
         return Response(status=status.HTTP_404_NOT_FOUND)
     orders = get_bidding_orders(restauraunt)
-    serializer = OrderSerializer(orders, many=True)
-    return Response(serializer.data, status=stats.HTTP_200_OK)
+    import json
+    orders_json = json.dumps(orders)
+    return Response(orders_json, status=status.HTTP_200_OK)
 
 @api_view(['PUT'])
 @permission_classes((AllowAny,))
