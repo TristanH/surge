@@ -43,7 +43,7 @@ urlpatterns = [
     url(r'^new_order/?$', new_order, name='new_order'),
     url(r'^get_orders/(?P<pk>[0-9]+)$', get_orders, name='get_orders'),
     url(r'^get_acc_orders/(?P<pk>[0-9]+)$', get_accepted_orders, name='get_acc_orders'),
-    url(r'^all_keywords/$', all_keywords, name='all_keywords'),
+    url(r'^child_keywords/$', child_keywords, name='child_keywords'),
 
 
     url(r'^place_bid/$', place_bid, name='place_bid'),

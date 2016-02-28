@@ -1,3 +1,5 @@
+import json 
+
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
@@ -9,7 +11,7 @@ from uber_rides.client import UberRidesClient
 
 from django.contrib.auth.models import User
 
-from main.models import Order, Restuarant, Bid, Keyword
+from main.models import Order, Restuarant, Bid, Keyword, Item
 from serializers import OrderSerializer, ItemSerializer, KeywordGroupSerializer, BidSerializer, KeywordSerializer
 
 from views import get_bidding_orders, get_acc_orders
@@ -91,7 +93,7 @@ def new_order(request, pk):
         return Response(status=status.HTTP_404_NOT_FOUND)
     try:
         #TODO(simon): make this work
-        group = KeywordGroup.objects.create(tags=request.POST['keywords'])
+        group = KeywordGroup.objects.create(tags=json.loads(request.POST['keywords']))
     except:
         return Response("Bad request for " + user.username, status=status.HTTP_400_BAD_REQUEST)
 
@@ -107,17 +109,26 @@ def new_order(request, pk):
     Bid.make_default(order.id)
     return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-@api_view(['GET'])
-@permission_classes((AllowAny,))
-def all_keywords(request):
-    ks = KeywordSerializer(Keyword.objects.all(), many=True)
-    return Response(ks.data, status=status.HTTP_200_OK)
-
-
-@api_view(['GET'])
+@api_view(['POST'])
 @permission_classes((AllowAny,))
 def child_keywords(request):
-    ks = KeywordSerializer(Keyword.objects.all(), many=True)
+    import pdb; pdb.set_trace()
+    pre_kws = set(json.loads(request.POST['keywords']))
+    valid_children = set()
+
+    for item in Item.objects.all():
+        wrong_item = False
+        for kw_id in pre_kws:
+            if not item.keywords.tags.filter(id=kw_id).exists():
+                wrong_item = True
+
+        if wrong_item:
+            continue
+
+        for kw in item.keywords.tags.exclude(id__in=pre_kws):
+            valid_children.add(kw.id)
+
+    ks = KeywordSerializer(Keyword.objects.filter(id__in=valid_children), many=True)
     return Response(ks.data, status=status.HTTP_200_OK)
 
 
