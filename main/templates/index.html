@@ -37,6 +37,13 @@
         max-width: 100%
     }
 
+    #howItWorks ol{
+      font-size: 18px;
+    }
+    #howItWorks li{
+      margin-bottom: 10px;
+    }
+
   </style>
 {% endblock %}
 
@@ -54,36 +61,26 @@
   </div>
 </div>
 <div class="container">
-  <div class="alert alert-info text-center" role="alert">
-    To deploy your own copy, and learn the fundamentals of the Heroku platform, head over to the <a href="https://devcenter.heroku.com/articles/getting-started-with-python" class="alert-link">Getting Started with Python on Heroku</a> tutorial.
-  </div>
-  <hr>
-  <div class="row">
+  <div class="row" id="howItWorks">
     <div class="col-md-6">
-      <h3><span class="glyphicon glyphicon-info-sign"></span> How it works</h3>
-      <ul>
+      <h3><span class="glyphicon glyphicon-info-sign"></span> How it works (users)</h3>
+      <ol>
         <li>You place your order, easily choosing what features you'd like your meal to have.</li>
 
         <li>All of the nearby restaurants see your order, and bid on who can fulfill your order for the cheapest.</li>
         <li>You can then browse through the offers and choose which meal you'd like to accept.</li>
         <li>The meal is delivered right to your door.</li>
-
-        <li>You can scale your app, manage it, and deploy over <a href="https://addons.heroku.com/">150 add-on services</a>, from the Dashboard or CLI.</li>
-        <li>Check out the <a href="https://devcenter.heroku.com/articles/getting-started-with-python">Getting Started</a> guide to learn more!</li>
-      </ul>
+      </ol>
     </div>
     <div class="col-md-6">
-      <h3><span class="glyphicon glyphicon-link"></span> Helpful Links</h3>
-      <ul>
-        <li><a href="https://www.heroku.com/home">Heroku</a></li>
-        <li><a href="https://devcenter.heroku.com/">Heroku Dev Center</a></li>
-        <li><a href="https://devcenter.heroku.com/articles/getting-started-with-python">Getting Started with Python on Heroku</a></li>
-        <li><a href="https://devcenter.heroku.com/articles/django-app-configuration">Configuring Django Apps for Heroku</a></li>
-      </ul>
+      <h3><span class="glyphicon glyphicon-info-sign"></span> How it works (restaurants)</h3>
+      <ol>
+        <li>Your restaurant is in off-peak hours, and could use some more orders to fill. The stove is hot so why not sell more food!</li>
+        <li>Sign up and have your menu uploaded to our site</li>
+        <li>Browse through all the different meals people are looking for, matched directly to the meals your restaurant serves.</li>
+        <li>Cook the meal, and have it picked up and delivered to the customer for you, via <a href="#">Uber</a>.</li>
+      </ol>
     </div>
   </div> <!-- row -->
-   <div class="alert alert-info text-center" role="alert">
-    Please do work through the Getting Started guide, even if you do know how to build such an application.  The guide covers the basics of working with Heroku, and will familiarize you with all the concepts you need in order to build and deploy your own apps.
-  </div>
 </div>
 {% endblock %}
