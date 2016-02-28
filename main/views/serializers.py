@@ -10,7 +10,7 @@ class KeywordSerializer(serializers.HyperlinkedModelSerializer):
 class OrderSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Order
-        fields = ('description',)
+        fields = ('description', 'latitude', 'longitude',)
 
 class ItemSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
