@@ -20,7 +20,7 @@ from serializers import OrderSerializer, ItemSerializer, KeywordGroupSerializer,
 from views import get_bidding_orders, get_acc_orders
 
 
-@api_view(['POST'])
+@api_view(['GET'])
 @permission_classes((AllowAny,))
 def call_uber(request):
     try:
@@ -28,18 +28,18 @@ def call_uber(request):
         session = Session(server_token=session_token)
         client = UberRidesClient(session, sandbox_mode=True)
     except Exception as e:
-        return Response(e.info, status=status.HTTP_404_NOT_FOUND)
+        return Response(str(e), status=status.HTTP_404_NOT_FOUND)
 
     # Get a ride
     try:
-        response = client.get_products(request.POST['slat'], request.POST['slng'])
+        response = client.get_products(request.GET['slat'], request.GET['slng'])
         products = response.json.get('products')
         product_id = products[0].get('product_id')
     except Exception as e:
-        return Response(e.info, status=status.HTTP_404_NOT_FOUND)
+        return Response(str(e), status=status.HTTP_404_NOT_FOUND)
 
     import pdb; pdb.set_trace()
-    order = Order.objects.get(id=request.POST['order_id'])
+    order = Order.objects.get(id=request.GET['order_id'])
     order.pickup_time = timezone.now() + timedelta(minutes=4)
     order.save()
     return Response(status=status.HTTP_200_OK)
@@ -48,12 +48,12 @@ def call_uber(request):
     try:
         import pdb; pdb.set_trace()
         response = client.request_ride(product_id=product_id,
-                                   start_latitude=float(request.POST['slat']),
-                                   end_latitude=float(request.POST['elat']),
-                                   start_longitude=float(request.POST['slng']),
-                                   end_longitude=float(request.POST['elng']))
+                                   start_latitude=float(request.GET['slat']),
+                                   end_latitude=float(request.GET['elat']),
+                                   start_longitude=float(request.GET['slng']),
+                                   end_longitude=float(request.GET['elng']))
     except Exception as e:
-        return Response(e.info, status=status.HTTP_404_NOT_FOUND)
+        return Response(str(e), status=status.HTTP_404_NOT_FOUND)
     return Response(status=status.HTTP_200_OK)
 
 
@@ -112,9 +112,10 @@ def new_order(request, pk):
         return Response("No user.", status=status.HTTP_404_NOT_FOUND)
     try:
         group = KeywordGroup.objects.create()
-        for i in json.loads(request.POST['keywords']):
+        for i in json.loads(request.PUT['keywords']):
             new_word = Keyword.objects.get(string=i)
             group.tags.add(new_word)
+        group.save()
     except:
         return Response("Bad request for " + user.username, status=status.HTTP_400_BAD_REQUEST)
 

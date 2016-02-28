@@ -29,8 +29,9 @@ window.Home = React.createClass({
 
   		var sendData = $.extend({}, this.props.locationData);
   		sendData['order_id'] = row.order.id;
+  		sendData['format'] = 'json'
 
-		$.post("http://localhost:8000/call_uber/?format=json", 
+		$.get("http://localhost:8000/call_uber/?format=json", 
 			sendData,
 			function(e){debugger;},
 			 'json'
