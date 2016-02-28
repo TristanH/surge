@@ -43,7 +43,7 @@
         height: 200px;
         border: 2px solid white
     }
-    .jumbotron .lang-logo img {
+    .jumbotron .lang-logo div {
         max-width: 100%
     }
     .food-logo {
@@ -59,6 +59,12 @@
         max-height: 100%
     }
 
+    #map{
+      height: 270px;
+      width: 270px;
+      border-radius: 130px;
+    }
+
   </style>
 {% endblock %}
 
@@ -68,13 +74,11 @@
   <div class="container">
     <div class="row">
       <div class="col-md-3">
-        <a href="/" class="lang-logo">
-          <img src="{% static 'surge-logo.png'%}">
-        </a>
+        <div id="map"></div>
       </div>
       <div class="col-md-9">
         <h1>{{user.restaurant.name}}</h1>
-        <p>Located at: 3180 18th St.</p>
+        <p>Located at: {{user.restaurant.address}}</p>
         <a type="button" class="btn btn-lg btn-default" href="{% url 'bidding' %}"><span class="glyphicon glyphicon-flash"></span> View orders to bid on</a>
         <a type="button" class="btn btn-lg btn-primary" href="#menu"><span class="glyphicon glyphicon-glass"></span> Add more meals to your menu</a>
       </div>
@@ -89,10 +93,10 @@
       <div class="row">
       <div class="col-md-2">
         <span class="food-logo">
-        {% if item.id == 1 %}
-          <img src="http://jlincatering.com/wp-content/uploads/2016/01/pizza-tumblr-tumblr-nztvk1ldea1rlw3m5o1-500.jpg">
+        {% if item.image_url %}
+          <img src="{{item.image_url}}">
         {% else %}
-          <img src="http://sabinasgrill.com/wp-content/uploads/2015/04/Lifestyle_Taste_PastaPizzaAndSandwiches_HawaiianPizza_LifestyleArticle_FEATURED.png">
+          <img src="http://jlincatering.com/wp-content/uploads/2016/01/pizza-tumblr-tumblr-nztvk1ldea1rlw3m5o1-500.jpg">
         {% endif %}
         </span>
       </div>
@@ -105,6 +109,44 @@
       </div>
       </div>
     </div>
+
+   <script>
+      // Note: This example requires that you consent to location sharing when
+      // prompted by your browser. If you see the error "The Geolocation service
+      // failed.", it means you probably did not give permission for the browser to
+      // locate you.
+
+      function initMap() {
+
+        var lat ={{user.restaurant.latitude}};
+        var lng = {{user.restaurant.longitude}}
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: lat , lng: lng},
+          zoom: 14,
+          disableDefaultUI: true
+        });
+
+        var pos = {'lat': lat,'lng': lng}
+
+        // Construct the polygon.
+        new google.maps.Circle({
+          strokeColor: '#3498db',
+          strokeOpacity: 0.8,
+          strokeWeight: 2,
+          fillColor: '#3498db',
+          fillOpacity: 0.35,
+          map: map,
+          center: pos,
+          radius: 80
+        });
+
+        map.setCenter(pos);
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDg3otSVw2zKrLA2GGslcQJwPOdyFqxof0&signed_in=true&callback=initMap">
+    </script>
   {% endfor %}
 </div>
 {% endblock %}

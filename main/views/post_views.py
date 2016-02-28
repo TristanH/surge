@@ -7,7 +7,7 @@ from requests_oauth2 import OAuth2
 from uber_rides.session import Session
 from uber_rides.client import UberRidesClient
 
-from django.contrib.auth.models import User   
+from django.contrib.auth.models import User
 
 from main.models import Order, Restuarant, Bid
 from serializers import OrderSerializer, ItemSerializer, KeywordGroupSerializer, BidSerializer

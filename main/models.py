@@ -60,6 +60,7 @@ class Restuarant(models.Model):
     name = models.CharField(max_length=255)
     latitude = models.DecimalField(max_digits=10, decimal_places=7)
     longitude = models.DecimalField(max_digits=10, decimal_places=7)
+    address = models.CharField(max_length=255, default="3180 18th St.")
 
     def __str__(self):
         return self.name
@@ -84,6 +85,8 @@ class Item(models.Model):
     keywords = models.ForeignKey(KeywordGroup)
 
     description = models.CharField(max_length=511)
+
+    image_url = models.CharField(max_length=1023, null=True)
 
     def __str__(self):
         return self.name

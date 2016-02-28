@@ -27,7 +27,8 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^bidding/?$', bidding, name='bidding'),
-    url(r'^restaurant/(?P<restaurant_id>[0-9]+)/?$', restaurant_profile, name='restaurant_profile'),
+
+    url(r'^restaurant/?$', restaurant_profile, name='restaurant_profile'),
 
 
     url(r'^login/?$', auth_views.login,

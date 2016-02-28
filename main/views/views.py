@@ -78,7 +78,7 @@ def place_bid(request):
     return redirect('bidding')
 
 @login_required
-def restaurant_profile(request, restaurant_id):
+def restaurant_profile(request):
     return render(request, 'restaurant_profile.html', {
         'items': Item.objects.filter(restaurant_id=request.user.restaurant().id)
     })
