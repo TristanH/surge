@@ -9,8 +9,8 @@ from uber_rides.client import UberRidesClient
 
 from django.contrib.auth.models import User   
 
-from main.models import Order, Restuarant
-from serializers import OrderSerializer, ItemSerializer
+from main.models import Order, Restuarant, Bid
+from serializers import OrderSerializer, ItemSerializer, KeywordGroupSerializer
 
 from views import get_bidding_orders
 
@@ -59,6 +59,21 @@ def get_orders(request, pk):
                            "item"  : ItemSerializer(dict_i["item"], context={'request': request}).data})
     orders_json = json.dumps(new_orders)
     return Response(orders_json, status=status.HTTP_200_OK)
+
+@api_view(['PUT'])
+@permission_classes((AllowAny,))
+def new_keyword(request, pk):
+    try:
+        user = User.objects.all()[0]
+    except:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    try:    
+        group = KeywordGroup.objects.create(tags=request.POST['keywords'])
+    except:
+        return Response("Bad request for " + user, sttus=status.HTTP_400_BAD_REQUEST)
+    qs = KeywordGroup.objects.filter(id=group.id)
+    serializer = KeywordGroupSerializer(qs, many=True)
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 @api_view(['PUT'])
 @permission_classes((AllowAny,))
