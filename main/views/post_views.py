@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from requests import post
-from request_oauth2 import OAuth2
+from requests_oauth2 import OAuth2
 
 from django.contrib.auth.models import User   
 
