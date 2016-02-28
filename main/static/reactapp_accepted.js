@@ -31,7 +31,7 @@ window.Home = React.createClass({
   		sendData['order_id'] = row.order.id;
   		sendData['format'] = 'json'
 
-		$.get("http://localhost:8000/call_uber/?format=json", 
+		$.get(this.props.uber_url, 
 			sendData,
 			function(e){debugger;},
 			 'json'

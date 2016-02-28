@@ -62,7 +62,7 @@ $(document).ready(function(){
   ReactDOM.render(
     React.createElement(Home, {'get_url': 
       "{% url 'get_acc_orders' pk=user.restaurant.id %}",
-      'uber_url': "{% url 'call_uber' %}",
+      'uber_url': "{% url 'estimate_uber' %}",
       'locationData': {
         'slat': {{user.restaurant.latitude}},
         'slng': {{user.restaurant.latitude}},
