@@ -4,6 +4,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from requests import post
 from requests_oauth2 import OAuth2
+from uber_rides.session import Session
+from uber_rides.client import UberRidesClient
 
 from django.contrib.auth.models import User   
 
@@ -12,6 +14,26 @@ from serializers import OrderSerializer, ItemSerializer
 
 from views import get_bidding_orders
 
+
+@api_view(['PUT'])
+@permission_classes((AllowAny,))
+def call_uber(request):
+    session_token = "qvf2qjSKUccNPRJKvXMHljPrz4Nvf_55SjAvKMwl"
+    session = Session(server_token=session_token)
+    client = UberRidesClient(session, sandbox_mode=True)
+
+    # Get a ride
+    response = client.get_products(request.GET.get('slat'), request.GET.get('slng')
+    products = response.json.get('products')
+    product_id = products[0].get('product_id')
+
+    # Order the ride
+    response = client.request_ride(product_id=product_id,
+                                   start_latitude=request.GET.get('slat'),
+                                   end_latitude=request.GET.get('elat'),
+                                   start_longitude=request.GET.get('slng'),
+                                   end_longitude=request.GET.get('elng'))
+    return Response(status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 @permission_classes((AllowAny,))
