@@ -59,8 +59,12 @@ Gets all orders for resteraunts with <id>
 
 ### PUT /new_order/<id>
 
-Adds new order for user with <id>. Payload must have latitude, longitude, and keywords.
+Adds new order for user with <id>. Payload must have latitude, longitude, and the id of a keywords group (name=keywords).
 
 ### POST /call_uber/
 
 Calls an uber. Pass in slat, slng (starting longitude and latitude), elat, elng.
+
+### PUT /new_keyword/<id>
+
+Makes a new keyword GROUP. Paylod should be keywords as a list of strings.
