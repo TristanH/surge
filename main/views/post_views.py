@@ -14,7 +14,7 @@ from django.utils import timezone
 
 from datetime import timedelta
 
-from main.models import Order, Restuarant, Bid, Keyword, Item
+from main.models import Order, Restuarant, Bid, Keyword, KeywordGroup, Item, HungryUser
 from serializers import OrderSerializer, ItemSerializer, KeywordGroupSerializer, BidSerializer, KeywordSerializer
 
 from views import get_bidding_orders, get_acc_orders
@@ -127,28 +127,26 @@ def get_accepted_orders(request, pk):
     return Response(orders_json, status=status.HTTP_200_OK)
 
 
-@api_view(['PUT', 'GET'])
+@api_view(['GET'])
 @permission_classes((AllowAny,))
-def new_order(request, pk):
-    try:
-            user = User.objects.get_or_create(username=request.PUT['username'])
-            h_user = HungryUser.objects.get_or_create(user=user)
-    except:
-        return Response("No user.", status=status.HTTP_404_NOT_FOUND)
+def new_order(request):
+    user = User.objects.get_or_create(username=request.GET['username'])[0]
+    
+    h_user = HungryUser.objects.get_or_create(user=user)[0]
     try:
         group = KeywordGroup.objects.create()
-        for i in json.loads(request.PUT['keywords']):
+        for i in request.GET['keywords'].split(","):
             new_word = Keyword.objects.get(string=i)
             group.tags.add(new_word)
         group.save()
     except:
         return Response("Bad request for " + user.username, status=status.HTTP_400_BAD_REQUEST)
 
-    order = Order.objects.create(hungry_user=user,
-                                 status=Order.IN_BIDDING,
+    order = Order.objects.create(hungry_user=h_user,
+                                 was_successful=None,
                                  keywords=group,
-                                 latitude=request.PUT['latitude'],
-                                 longitude=request.PUT['longitude'])
+                                 latitude=37.762385,
+                                 longitude=-122.4167899)
 
     qs = Order.objects.filter(id=order.id)
     serializer = OrderSerializer(qs, many=True)
