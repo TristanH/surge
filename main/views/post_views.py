@@ -38,9 +38,11 @@ def call_uber(request):
     except Exception as e:
         return Response(e.info, status=status.HTTP_404_NOT_FOUND)
 
+    import pdb; pdb.set_trace()
     order = Order.objects.get(id=request.POST['order_id'])
-    order.delivery_time = timezone.now() + timedelta(minutes=4)
+    order.pickup_time = timezone.now() + timedelta(minutes=4)
     order.save()
+    return Response(status=status.HTTP_200_OK)
 
     # Order the ride
     try:
@@ -128,10 +130,10 @@ def new_order(request, pk):
     Bid.make_default(order.id)
     return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-@api_view(['POST'])
+@api_view(['GET'])
 @permission_classes((AllowAny,))
 def child_keywords(request):
-    pre_kws = set(json.loads(request.POST['keywords']))
+    pre_kws = set(request.GET['keywords'].split(","))
     valid_children = set()
 
     for item in Item.objects.all():
@@ -148,5 +150,4 @@ def child_keywords(request):
 
     ks = KeywordSerializer(Keyword.objects.filter(id__in=valid_children), many=True)
     return Response(ks.data, status=status.HTTP_200_OK)
-
 
