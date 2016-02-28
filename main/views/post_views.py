@@ -10,10 +10,10 @@ from serializers import OrderSerializer, ItemSerializer
 
 from views import get_bidding_orders
 
-
 @api_view(['POST'])
 @permission_classes((AllowAny,))
 def call_lyft(request):
+    
     return Response(status=HTTP_404_NOT_FOUND)
 
 
