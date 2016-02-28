@@ -8,7 +8,7 @@ from rest_framework import serializers
 class KeywordSerializer(serializers.ModelSerializer):                   
     class Meta:                                                                    
         model = Keyword                                                            
-        fields = ('string', 'is_main',)
+        fields = ('string', 'is_main', 'id')
 
 class KeywordGroupSerializer(serializers.HyperlinkedModelSerializer):                   
     tags = KeywordSerializer
@@ -22,7 +22,7 @@ class KeywordGroupSerializer(serializers.HyperlinkedModelSerializer):
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
-        fields=('id', 'bidding_end_time', 'keywords', 'latitude', 'longitude', 'description')
+        fields=('id', 'bidding_end_time', 'keywords', 'latitude', 'longitude', 'description', 'pickup_time')
         depth = 2
         # fields = ('description', 'bidding_end_time', 'keywords')
 

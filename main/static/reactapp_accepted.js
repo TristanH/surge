@@ -26,19 +26,15 @@ window.Home = React.createClass({
 
   	deliverOrder: function(row){
   		debugger;
-	    $.ajax({
-	      url: this.props.uber_url,
-	      dataType: 'json',
-	      method: 'POST',
-	      cache: false,
-	      data: this.props.locationData,
-	      success: function(data) {
-	        debugger;
-	      }.bind(this),
-	      error: function(xhr, status, err) {
-	        console.error(this.props.url, status, err.toString());
-	      }.bind(this)
-    	});  	
+
+  		var sendData = $.extend({}, this.props.locationData);
+  		sendData['order_id'] = row.order.id;
+
+		$.post("http://localhost:8000/call_uber/?format=json", 
+			sendData,
+			function(e){debugger;},
+			 'json'
+		);
     },
 
 	render: function() {
@@ -48,9 +44,9 @@ window.Home = React.createClass({
 		  var curBidPrice = ((row.min_bid.price)/100.0).toFixed(2);
 		  var newBidPrice = ((row.min_bid.price - 50)/100.0).toFixed(2);
 		  
-		  var alreadyWinning = row.min_bid.item && (row.min_bid.item.restaurant === self.props.restaurant_id);
+		  var alreadyWinning = !!row.order.pickup_time;
 		  return (
-			<div key={row.order.id} className={"order-row alert text-center row " + "alert-info"} role="alert">
+			<div key={row.order.id} className={"order-row alert text-center row " + (alreadyWinning ? "alert-success" : "alert-info")} role="alert">
 	        <div className="order-col col-md-2 time-since">
 	          {moment(row.order.bidding_end_time).fromNow()}
 	        </div>

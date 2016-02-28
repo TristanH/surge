@@ -10,6 +10,9 @@ from uber_rides.session import Session
 from uber_rides.client import UberRidesClient
 
 from django.contrib.auth.models import User
+from django.utils import timezone
+
+from datetime import timedelta
 
 from main.models import Order, Restuarant, Bid, Keyword, Item
 from serializers import OrderSerializer, ItemSerializer, KeywordGroupSerializer, BidSerializer, KeywordSerializer
@@ -34,6 +37,10 @@ def call_uber(request):
         product_id = products[0].get('product_id')
     except Exception as e:
         return Response(e.info, status=status.HTTP_404_NOT_FOUND)
+
+    order = Order.objects.get(id=request.POST['order_id'])
+    order.delivery_time = timezone.now() + timedelta(minutes=4)
+    order.save()
 
     # Order the ride
     try:
@@ -136,7 +143,7 @@ def child_keywords(request):
         if wrong_item:
             continue
 
-        for kw in item.keywords.tags.exclude(id__in=pre_kws):
+        for kw in item.keywords.tags.exclude(id__in=pre_kws, is_main=True):
             valid_children.add(kw.id)
 
     ks = KeywordSerializer(Keyword.objects.filter(id__in=valid_children), many=True)

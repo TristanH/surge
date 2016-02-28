@@ -52,6 +52,8 @@ class Order(models.Model):
     longitude = models.DecimalField(max_digits=10, decimal_places=7)
 
     description = models.CharField(max_length=511, null=True)
+
+    pickup_time = models.DateTimeField(null=True, blank=True, default=None)
     # TODO: stripe payment token
 
 
