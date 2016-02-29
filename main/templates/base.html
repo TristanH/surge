@@ -16,10 +16,25 @@
       </li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
+      <li class="dropdown navbar-right">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"></span>{% if user.restaurant %}{{user.restaurant.name}}{% else %}Restaurant Login{% endif %} <span class="glyphicon glyphicon-cutlery"></span></a>
+          <ul class="dropdown-menu" role="menu">
+          {% if user.restaurant %}
+            <li><a href="{% url 'restaurant_profile' %}">Profile</a></li>
+            <li><a href="{% url 'bidding' %}">Bidding</a></li>
+            <li><a href="{% url 'accepted' %}">Accepted Orders</a></li>
+          {% else %}
+            <li><a href="{% url 'login' %}?next=/restaurant/">Log In</a></li>
+          {% endif %}
+          </ul>
+        </li>
+    </ul>
+
+    <!-- <ul class="nav navbar-nav navbar-right">
       <li class="navbar-right" >
         {% if user.restaurant %}<a href="{% url 'restaurant_profile' %}">{{user.restaurant.name}}{% else %}<a href="{% url 'login' %}?next=/restaurant">Restaurant Login{% endif %} <span class="glyphicon glyphicon-cutlery"></span></a>
       </li>
-    </ul>
+    </ul> -->
   </div>
 </nav>
 
